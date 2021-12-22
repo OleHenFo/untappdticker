@@ -1,7 +1,9 @@
 <script>
   import {auth_token,checkins} from "../store";
   import { flip } from 'svelte/animate';
-	import { slide,fade } from 'svelte/transition';
+	import { slide,fade,scale } from 'svelte/transition';
+
+  let shown = [];
 
   function makeid(length) {
     var result           = '';
@@ -24,8 +26,8 @@
 <p>Auth token is {$auth_token}</p>
 
 <div class='container'>
-{#each $checkins as ch (ch.nr)}
-  <div in:fade animate:flip class='checkin' style="order: -{ch.nr};">
+{#each $checkins.slice(-5) as ch (ch.nr)}
+  <div in:fade out:fade animate:flip class='checkin' style="order: -{ch.nr};">
     <p>Name: {ch.name}, nr {ch.nr}</p>
   </div>
 {/each}
@@ -36,7 +38,7 @@
     display: flex;
     flex-direction: column-reverse;
     background-color:khaki;
-    height: 50vmax;
+    height: 20vmax;
     overflow-y: hidden;
   }
 
