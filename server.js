@@ -1,21 +1,29 @@
-
-const express = require('express');
-const app = express();
-const port = process.env.PORT || 5000;
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const path = require('path');
-
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
-app.get('/', (req, res) => {
-  return res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+const path = require("path");
+const dotenv = require("dotenv");
+dotenv.config();
+const fastify = require("fastify")({
+  logger: true
 });
-app.post('/', (req,res) => {
-  console.log(req)
-  return res.send(JSON.stringify({authToken:"ajdkdldødpkwwioi3838u"}))
-})
-app.listen(port, () => {
-   console.log(`Server is up at port ${port}`);
+
+fastify.register(require("fastify-static"), {
+  root: path.join(__dirname, "public")
+});
+
+fastify.get("/", function(request, reply) {
+  reply.sendFile("index.html");
+});
+
+fastify.post("/", function(request, reply) {
+  fastify.log.info(request);
+  reply.send({authToken:"abbabababababababab"});
+});
+
+// Run the server and report out to the logs
+fastify.listen(process.env.PORT, function(err, address) {
+  if (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
+  console.log(`Your app is listening on ${address}`);
+  fastify.log.info(`server listening on ${address}`);
 });

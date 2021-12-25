@@ -13,6 +13,7 @@
       headers:headers,
       body: JSON.stringify({text:"Hello",code:$code})
     });
+    
     console.log(res)
     //auth_token.set('abcabc123123')
   }
