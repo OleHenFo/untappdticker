@@ -1,9 +1,12 @@
 import svelte from 'rollup-plugin-svelte';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
+import dotenv from 'dotenv';
+dotenv.config()
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -37,6 +40,11 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+    replace({
+      CLIENT_ID: JSON.stringify(process.env.CLIENT_ID),
+      CLIENT_SECRET: JSON.stringify(process.env.CLIENT_SECRET),
+      REDIRECT_URL: JSON.stringify(process.env.REDIRECT_URL)
+    }),
 		svelte({
 			compilerOptions: {
 				dev: !production

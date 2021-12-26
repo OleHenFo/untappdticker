@@ -1,5 +1,5 @@
 <script>
-  import {auth_token,checkins} from "../store";
+  import {auth_token,checkins,venue} from "../store";
   import { flip } from 'svelte/animate';
 	import { slide,fade,fly } from 'svelte/transition';
   import { backInOut } from 'svelte/easing';
@@ -17,11 +17,30 @@
     return result;
   }
 
-  setInterval(() => {
-    let nr = $checkins.length;
-    let list = [...$checkins,{name:makeid(5),nr:nr}]
-    checkins.set(list)
-  }, 2000);
+  venue.set(66084)
+
+  const getCheckins = () => {
+    console.log("Fetching checkins...")
+    fetch(`https://api.untappd.com/v4/venue/checkins/${$venue}?access_token=${$auth_token}`)
+    .then(response => response.json())
+    .then(data => {
+      let ch = data.response.checkins.items;
+      if (ch){
+        console.log(ch)
+        checkins.set(ch)
+      } else {
+        alert("Error fetching checkins")
+      }
+    }).catch((error) => {
+      console.log(error)
+      alert(error)
+    });
+  };
+
+  getCheckins()
+  // setInterval(() => {
+  //   getCheckins()
+  // }, 60000);
 </script>
 
 <p>Auth token is {$auth_token}</p>
