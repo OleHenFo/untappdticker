@@ -27,7 +27,7 @@
       let ch = data.response.checkins.items;
       if (ch){
         console.log(ch)
-        checkins.set(ch)
+        checkins.set(ch.reverse())
       } else {
         alert("Error fetching checkins")
       }
@@ -42,7 +42,7 @@
   //   getCheckins()
   // }, 60000); TODO: uncomment
 </script>
-
+<button on:click={getCheckins}>Get Checkins</button>
 <p>Auth token is {$auth_token}</p>
 
 <!-- <script>
