@@ -17,7 +17,7 @@
     return result;
   }
 
-  venue.set(66084)
+  venue.set(66084) // TODO: Remove me
 
   const getCheckins = () => {
     console.log("Fetching checkins...")
